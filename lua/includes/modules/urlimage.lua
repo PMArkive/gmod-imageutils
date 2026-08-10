@@ -723,12 +723,12 @@ function GetStartupFailure()
 	return not ok and (err or "Unknown")
 end
 
-do return end
+if not IMAGEURLTEST then return end
 
-local test1 = surface.URLImage "materials/silk_icon_flags.png?b=cdq"
-local test2 = surface.URLImage "http://g1.metastruct.net:2095/jpg.jpg?c=dqd"
-local test3 = surface.URLImage "http://g1.metastruct.net:2095/vtf.vtf?c=qdq"
-hook.Add("DrawOverlay", "a", function()
+local test1 = surface.LazyURLImage "https://raw.githubusercontent.com/Metastruct/gmod-imageutils/refs/heads/master/node_hint.vtf"
+local test2 = surface.LazyURLImage "https://placehold.co/300x256.png"
+local test3 = surface.LazyURLImage "https://placehold.co/300x256.jpg"
+hook.Add("HUDPaint", "a", function()
 	surface.SetDrawColor(255, 255, 255, 255)
 
 	local w, h = test1()
