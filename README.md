@@ -15,7 +15,8 @@ require("urlimage")
 local img = surface.LazyURLImage("https://placehold.co/300x256.png",'smooth')
 
 hook.Add("HUDPaint", "test", function()
-    if not img() then return end
+    local w,h = img()
+    if not w then return end
     surface.SetDrawColor(255,255,255,255)
     surface.DrawTexturedRect(0, 0, w, h)
 end)
