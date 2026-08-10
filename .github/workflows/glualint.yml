@@ -1,0 +1,41 @@
+name: GLuaLint
+
+on:
+  push:
+    paths:
+      - "lua/**"
+      - ".glualint.json"
+      - ".github/workflows/glualint.yml"
+  pull_request:
+    paths:
+      - "lua/**"
+      - ".glualint.json"
+      - ".github/workflows/glualint.yml"
+  workflow_dispatch:
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Get changed lua files
+        id: changed-files
+        uses: tj-actions/changed-files@v46
+        with:
+          files: |
+            **.lua
+          since_last_remote_commit: true
+
+      - name: Download GluaFixer
+        run: |
+          curl -o glualint.zip -L https://github.com/FPtje/GLuaFixer/releases/download/1.29.0/glualint-1.29.0-x86_64-linux.zip
+          unzip glualint.zip
+
+      - name: Lint changed files
+        if: steps.changed-files.outputs.any_changed == 'true'
+        run: |
+          ./glualint --output-format github ${{ steps.changed-files.outputs.all_changed_files }}
